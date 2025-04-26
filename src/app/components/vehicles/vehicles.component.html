@@ -1,35 +1,88 @@
 <table class="vehicle-table">
-    <thead>
-      <tr>
-        <th>Reg</th>
-        <th>Make</th>
-        <th>Model</th>
-        <th>Owner</th>
-        <th>Mechanic</th>
-        <th>Garage</th>
-        <th>Update</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let vehicle of vehicles">
-        <td>{{ vehicle.reg }}</td>
-        <td>{{ vehicle.make }}</td>
-        <td>{{ vehicle.model }}</td>
-        <td>
-          {{ vehicle.owner?.cid }} - {{ vehicle.owner?.name }}
-        </td>
-        <td>
-          {{ vehicle.mechanic?.mid }} - {{ vehicle.mechanic?.name }}
-          ({{ vehicle.mechanic?.salary }})
-        </td>
-        <td>
-          {{ vehicle.mechanic?.garage?.gid }} - {{ vehicle.mechanic?.garage?.location }}
-          ({{ vehicle.mechanic?.garage?.budget }})
-        </td>
-        <td>
-          <button (click)="updateVehicle(vehicle)">Update</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  
+  <thead>
+    <tr>
+      <th>Reg</th>
+      <th>Make</th>
+      <th>Model</th>
+      <th>Owner</th>
+      <th>Mechanic</th>
+      <th>Garage</th>
+      <th>Update</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let vehicle of vehicles">
+      <td>{{ vehicle.reg }}</td>
+      <td>{{ vehicle.make }}</td>
+      <td>{{ vehicle.model }}</td>
+      <td>
+        {{ vehicle.owner?.cid }} - {{ vehicle.owner?.name }}
+      </td>
+      <td>
+        {{ vehicle.mechanic?.mid }} - {{ vehicle.mechanic?.name }}
+        ({{ vehicle.mechanic?.salary }})
+      </td>
+      <td>
+        {{ vehicle.mechanic?.garage?.gid }} - {{ vehicle.mechanic?.garage?.location }}
+        ({{ vehicle.mechanic?.garage?.budget }})
+      </td>
+      <td>
+        <button (click)="updateVehicle(vehicle)">Update</button>
+      </td>
+    </tr>
+
+    <!-- Update Form Row -->
+    <tr *ngIf="selectedVehicle">
+      <td colspan="7">
+        <div class="p-4 bg-gray-100 rounded-lg shadow-md">
+          <form (ngSubmit)="saveUpdate()">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="font-bold">Reg:</label>
+                <input type="text" class="border p-2 w-full" [value]="selectedVehicle.reg" readonly>
+              </div>
+              <div>
+                <label class="font-bold">Make:</label>
+                <input type="text" class="border p-2 w-full" [value]="selectedVehicle.make" readonly>
+              </div>
+              <div>
+                <label class="font-bold">Model:</label>
+                <input type="text" class="border p-2 w-full" [value]="selectedVehicle.model" readonly>
+              </div>
+              <div>
+                <label class="font-bold">Mechanic ID:</label>
+                <input
+  type="text"
+  class="border p-2 w-full"
+  [(ngModel)]="selectedVehicle.mechanic.mid"
+  name="mid"
+  pattern="[0-9]*"
+  inputmode="numeric"
+  required
+>
+
+              </div>
+              <div>
+                <label class="font-bold">Mechanic Name:</label>
+                <input type="text" class="border p-2 w-full" [value]="selectedVehicle.mechanic?.name" readonly>
+              </div>
+              <div>
+                <label class="font-bold">Garage Location:</label>
+                <input type="text" class="border p-2 w-full" [value]="selectedVehicle.mechanic?.garage?.location" readonly>
+              </div>
+            </div>
+
+            <div class="mt-4 flex justify-end">
+              <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2">
+                Save
+              </button>
+              <button type="button" (click)="cancelUpdate()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -2,7 +2,7 @@
   {{ errorMessage }}
 </div>
 
-
+<!-- Table Display -->
 <table class="vehicle-table">
   <thead>
     <tr>
@@ -35,6 +35,11 @@
         <button (click)="updateVehicle(vehicle)">Update</button>
       </td>
     </tr>
+
+    <!-- Add this button to your component -->
+<button (click)="toggleTheme()">Toggle Dark Mode</button>
+
+    
     
     <!-- Update Form Row -->
     <tr *ngIf="selectedVehicle">

@@ -20,8 +20,9 @@ export class VehiclesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadVehicles();
-  }
+}
 
+  // Method to fetch the list of vehicles from the VehicleService
   loadVehicles(): void {
     this.vehicleService.getAllVehicles().subscribe({
       next: (data) => {
@@ -35,11 +36,13 @@ export class VehiclesComponent implements OnInit {
     });
   }
 
+  // Method to update a selected vehicle
   updateVehicle(vehicle: Vehicle): void {
     this.selectedVehicle = { ...vehicle }; 
     this.errorMessage = '';
   }
 
+  // Method to save the updated vehicle details
   saveUpdate(): void {
     if (this.selectedVehicle) {
       const reg = this.selectedVehicle.reg;
@@ -47,6 +50,7 @@ export class VehiclesComponent implements OnInit {
         mid: this.selectedVehicle.mechanic.mid
       };
   
+      // Call the service to update the vehicle
       this.vehicleService.updateMechanicForVehicle(reg, mechanicDetails).subscribe({
         next: (response) => {
           console.log('Update successful:', response);
@@ -62,11 +66,28 @@ export class VehiclesComponent implements OnInit {
     }
   }
   
-  
-  
-
+  // Method to cancel updating a vehicle
   cancelUpdate(): void {
     this.selectedVehicle = null;
     this.errorMessage = '';
+  }
+
+  // Toggle dark mode
+  toggleTheme(): void {
+    if (document.body.classList.contains('dark-mode')) {
+      this.disableDarkMode();
+    } else {
+      this.enableDarkMode();
+    }
+  }
+
+  enableDarkMode(): void {
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('theme', 'dark');
+  }
+
+  disableDarkMode(): void {
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem('theme', 'light');
   }
 }

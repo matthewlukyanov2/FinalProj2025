@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 export class VehiclesComponent implements OnInit {
   vehicles: Vehicle[] = [];
   selectedVehicle: Vehicle | null = null;
+  errorMessage: string = '';
 
   constructor(private vehicleService: VehicleService) {}
 
@@ -23,13 +24,20 @@ export class VehiclesComponent implements OnInit {
 
   loadVehicles(): void {
     this.vehicleService.getAllVehicles().subscribe({
-      next: (data) => (this.vehicles = data),
-      error: (err) => console.error('Error fetching vehicles:', err)
+      next: (data) => {
+        this.vehicles = data;
+        this.errorMessage = ''; // clear any previous error
+      },
+      error: (err) => {
+        console.error('Error fetching vehicles:', err);
+        this.errorMessage = 'Failed to load vehicles.';
+      }
     });
   }
 
   updateVehicle(vehicle: Vehicle): void {
     this.selectedVehicle = { ...vehicle }; 
+    this.errorMessage = '';
   }
 
   saveUpdate(): void {
@@ -44,6 +52,7 @@ export class VehiclesComponent implements OnInit {
           console.log('Update successful:', response);
           this.selectedVehicle = null; 
           this.loadVehicles(); 
+          this.errorMessage = '';
         },
         error: (err) => {
           console.error('Error updating vehicle:', err);
@@ -58,5 +67,6 @@ export class VehiclesComponent implements OnInit {
 
   cancelUpdate(): void {
     this.selectedVehicle = null;
+    this.errorMessage = '';
   }
 }

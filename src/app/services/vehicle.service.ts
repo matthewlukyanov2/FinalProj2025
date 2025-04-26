@@ -14,4 +14,11 @@ export class VehicleService {
   getAllVehicles(): Observable<Vehicle[]> {
     return this.http.get<Vehicle[]>(this.apiUrl);
   }
+
+  updateMechanicForVehicle(reg: string, mechanicDetails: any): Observable<any> {
+    const url = `http://localhost:8080/api/vehicle/${reg}`;
+    return this.http.put(url, mechanicDetails);
+  }
+  
+  
 }
